@@ -5,7 +5,7 @@ public class Server {
     private ServerSocket serverSocket=null;
     private Socket socket=null;
     protected BufferedReader reader=null;
-    private PrintWriter printWriter=null;
+    protected PrintWriter printWriter=null;
 
     Server(int port){
         try {
@@ -15,18 +15,26 @@ public class Server {
             System.out.println("Listening");
 
             //listening for requests
-            socket=serverSocket.accept();
+                    socket=serverSocket.accept();
             System.out.println("Connected!!");
             //configuring input
             reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             // configuring output stream
-            printWriter=new PrintWriter(socket.getOutputStream());
+            printWriter=new PrintWriter(socket.getOutputStream(),true);
+
+
+
 
         }catch (IOException e){
             System.out.println(e.getMessage());
         }
     }
+
+    private void handleClient(Socket socket) {
+
+    }
+
     public void close(){
         try {
             serverSocket.close();
@@ -38,5 +46,12 @@ public class Server {
             return;
         }
 
+    }
+
+    public void register(String[] request) {
+    }
+
+    public void login(String[] request) {
+        System.out.println("lojlhjyfhydsgrg");
     }
 }
