@@ -6,6 +6,9 @@ public class Server {
     private Socket socket=null;
     protected BufferedReader reader=null;
     protected PrintWriter printWriter=null;
+    private FileWriter fileWriter=null;
+    private BufferedWriter bufferedFileWriter=null;
+    private BufferedReader fileReader=null;
 
     Server(int port){
         try {
@@ -49,6 +52,19 @@ public class Server {
     }
 
     public void register(String[] request) {
+        try {
+            fileWriter=new FileWriter("src/participants.txt",true);
+            bufferedFileWriter = new BufferedWriter(fileWriter);
+            bufferedFileWriter.write(request[1]+" "+request[2]+" "+request[3]+" "+request[4]+" "+request[5]+" "+request[6]+" "+request[7]+" "+request[8]);
+            bufferedFileWriter.newLine();
+            bufferedFileWriter.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
     }
 
     public void login(String[] request) {
