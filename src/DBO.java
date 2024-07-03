@@ -43,24 +43,8 @@ public class DBO {
         }
     }
 
-    public void insertParticipant(String username, String firstname, String lastname, String emailAddress, String password, String date_of_birth, String school_registration_number, String image_file) {
-        query = "INSERT INTO mcms.participant (username,fname,lname, email, password, dob, schoolRegNo, image) VALUES ('" + username + "', '" + firstname + "', '" + lastname + "', '" + emailAddress + "', '" + password + "', '" + date_of_birth + "', '" + school_registration_number + "', '" + image_file + "')";
-        try {
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
 
-        }
-    }
-    public void insertRejectedParticipant(String username, String firstname, String lastname, String emailAddress, String password, String date_of_birth, String school_registration_number, String image_file) {
-        query = "INSERT INTO mcms.rejected_participantparticipant (username,fname,lname, email, password, dob, schoolRegNo, image) VALUES ('" + username + "', '" + firstname + "', '" + lastname + "', '" + emailAddress + "', '" + password + "', '" + date_of_birth + "', '" + school_registration_number + "', '" + image_file + "')";
-        try {
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
 
-        }
-    }
     public boolean checkParticipant(String username, String password) {
         query = "SELECT * FROM mcms.participant WHERE username = '" + username + "' AND password = '" + password + "'";
         try {
@@ -79,6 +63,47 @@ public class DBO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    public String[] getRepresentative(String username) {
+        query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            resultSet.next();
+            return new String[]{resultSet.getString("rep_username"), resultSet.getString("rep_fname"), resultSet.getString("rep_lname"), resultSet.getString("rep_email"), resultSet.getString("school_regNo")};
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //method to check for school registration number
+
+    public boolean checkSchoolExists(String school) {
+        query = "SELECT * FROM mcms.school_representative WHERE school_regNo = '" + school + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void insertParticipant(String[] details) {
+        query = "INSERT INTO mcms.participant (username,fname,lname, email, password, dob, schoolRegNo, image) VALUES ('" + details[0] + "', '" + details[1] + "', '" + details[2] + "', '" + details[3] + "', '" + details[4] + "', '" + details[5] + "', '" + details[6] + "', '" + details[7] + "')";
+        try {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();}
+    }
+
+    public void insertRejectedParticipant(String[] details) {
+        query = "INSERT INTO mcms.rejected_participant (username,fname,lname, email, password, dob, schoolRegNo, image) VALUES ('" + details[0] + "', '" + details[1] + "', '" + details[2] + "', '" + details[3] + "', '" + details[4] + "', '" + details[5] + "', '" + details[6] + "', '" + details[7] + "')";
+        try {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

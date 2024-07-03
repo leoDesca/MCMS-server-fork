@@ -18,7 +18,6 @@ public class Main {
             while(true) {
                 request = server.reader.readLine().strip().split(" ");
 
-                server.printWriter.println("command received");
 
                 System.out.println(Arrays.toString(request));
                 if (Arrays.asList(initialCommands).contains(request[0])) {
@@ -27,11 +26,13 @@ public class Main {
                     switch (request[0]) {
                         case "register":
                             if (request.length >= 8 && request.length<=9) {
-                                server.printWriter.println("valid register");
-
-                                server.register(request);
+                                if(server.register(request)){
+                                    server.printWriter.println("valid register");
+                                }else {
+                                    server.printWriter.println("invalid school");
+                                }
                             }else {
-                                server.printWriter.println("invalid");
+                                server.printWriter.println("invalid values");
                             }
                             break;
                         case "login":
