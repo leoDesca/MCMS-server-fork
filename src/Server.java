@@ -52,6 +52,13 @@ public class Server {
     }
 
     public void login(String[] request) {
-        System.out.println("lojlhjyfhydsgrg");
+        DBO dbo = new DBO();
+        dbo.connect();
+        if (dbo.checkParticipant(request[1], request[2])) printWriter.println("participant "+request[1]);
+        else if (dbo.checkRepresentative(request[1], request[2])) printWriter.println("representative "+request[1]);
+        else printWriter.println("invalid");
+
+
+
     }
 }

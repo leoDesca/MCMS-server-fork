@@ -27,16 +27,16 @@ public class Main {
                     switch (request[0]) {
                         case "register":
                             if (request.length >= 8 && request.length<=9) {
-                                server.printWriter.println("valid command");
+                                server.printWriter.println("valid register");
 
                                 server.register(request);
                             }else {
-                                server.printWriter.println("Invalid command");
+                                server.printWriter.println("invalid");
                             }
                             break;
                         case "login":
                             if (request.length == 3) {
-                                server.printWriter.println("valid command");
+                                server.printWriter.println("valid login");
 
                                 server.login(request);
                             }else {
@@ -47,12 +47,12 @@ public class Main {
                             server.close();
                             break;
                         default:
-                            server.printWriter.println("Invalid command");
+                            server.printWriter.println("invalid");
                     }
                 } else {
-                    System.out.println("Invalid command");
+                    System.out.println("invalid");
 
-                    server.printWriter.println("Invalid command");
+                    server.printWriter.println("invalid");
                 }
             }
 

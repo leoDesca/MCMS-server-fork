@@ -61,4 +61,24 @@ public class DBO {
 
         }
     }
+    public boolean checkParticipant(String username, String password) {
+        query = "SELECT * FROM mcms.participant WHERE username = '" + username + "' AND password = '" + password + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean checkRepresentative(String username, String password) {
+        query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "' AND rep_password = '" + password + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
