@@ -11,22 +11,37 @@ public class Main {
         Main main = new Main();
 
         main.server=new Server(3333);
+
+
         main.initialCommands = new String[]{"register", "login"};
 
 
         try {
             while(true) {
+//                System.out.println(server.hashPassword("arthur"));
                 request = server.reader.readLine().strip().split(" ");
 
 
                 System.out.println(Arrays.toString(request));
                 if (Arrays.asList(initialCommands).contains(request[0])) {
+                    DBO dbo = new DBO();
+                    dbo.connect();
 
 
                     switch (request[0]) {
                         case "register":
-                            if (request.length >= 8 && request.length<=9) {
-                                if(server.register(request)){
+                            if ( request.length==9) {
+                                if (dbo.checkUsername(request[1])){
+                                    server.printWriter.println("invalid username");
+
+                                }else if (dbo.checkRejectedParticipant(request[1])){
+                                    server.printWriter.println("invalid rejected");
+                                } else if (dbo.checkParticipant(request[1],request[5] )) {
+                                    server.printWriter.println("invalid participant");
+
+                                } else if (server.checkUsernameFile(request[1])) {
+                                    server.printWriter.println("invalid username");
+                                } else if(server.register(request)){
                                     server.printWriter.println("valid register");
                                 }else {
                                     server.printWriter.println("invalid school");

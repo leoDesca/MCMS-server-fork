@@ -21,11 +21,13 @@ public class Representative {
         DBO dbo = new DBO();
         dbo.connect();
         try {
+            System.out.println(schoolRegNo);
             bufferedFileReader=new BufferedReader(new FileReader("src/participants.txt"));
             String reply;
             while ((line = bufferedFileReader.readLine()) != null) {
-//                System.out.println(line);
-
+                // send line to server if the school registration number matches the school registration number of the representative
+                System.out.println(line.split(" ")[6]);
+                if (line.split(" ")[6].equalsIgnoreCase(schoolRegNo)){
                 Main.server.printWriter.println(line);
                 reply=Main.server.reader.readLine();
                 if (reply.equalsIgnoreCase("yes")) {
@@ -33,7 +35,7 @@ public class Representative {
                 } else if (reply.equalsIgnoreCase("no") ){
                     dbo.insertRejectedParticipant(line.split(" "));
                 }
-
+            }
             }
             //clear the file
             BufferedWriter bufferedFileWriter = new BufferedWriter(new FileWriter("src/participants.txt"));

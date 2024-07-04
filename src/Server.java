@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.security.*;
 
 public class Server {
     private ServerSocket serverSocket=null;
@@ -56,12 +57,12 @@ public class Server {
         DBO dbo=new DBO();
 
         dbo.connect();
-        //check that school registration number exists
-        if (dbo.checkSchoolExists(request[7])) {
+
+        if (dbo.checkSchoolExists(request[7])){
             try {
                 fileWriter=new FileWriter("src/participants.txt");
                 bufferedFileWriter = new BufferedWriter(fileWriter);
-                bufferedFileWriter.write(request[1]+" "+request[2]+" "+request[3]+" "+request[4]+" "+request[5]+" "+request[6]+" "+request[7]+" "+request[8]);
+                bufferedFileWriter.write(request[1]+" "+request[2]+" "+request[3]+" "+request[4]+" "+ hashPassword(request[5])+" "+request[6]+" "+request[7]+" "+request[8]);
                 bufferedFileWriter.newLine();
                 bufferedFileWriter.close();
                 fileWriter.close();
@@ -69,11 +70,7 @@ public class Server {
                 System.out.println(e.getMessage());
             }
             return true;
-        }
-        else return false;
-
-
-
+        } else return false;
 
 
     }
@@ -81,8 +78,8 @@ public class Server {
     public void login(String[] request) {
         DBO dbo = new DBO();
         dbo.connect();
-        if (dbo.checkParticipant(request[1], request[2])) printWriter.println("participant "+request[1]);
-        else if (dbo.checkRepresentative(request[1], request[2])) {
+        if (dbo.checkParticipant(request[1],hashPassword(request[2]) )) printWriter.println("participant "+request[1]);
+        else if (dbo.checkRepresentative(request[1],hashPassword(request[2]) )) {
             printWriter.println("representative "+request[1]);
             Representative rep = new Representative(dbo.getRepresentative(request[1]));
             rep.validateParticipant();
@@ -90,7 +87,36 @@ public class Server {
         }
         else printWriter.println("invalid");
 
-
-
     }
+    //a method to hash the password
+    public String hashPassword(String password){
+        String hashedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(password.getBytes());
+            byte[] digest = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : digest) {
+                sb.append(String.format("%02x", b));
+            }
+            hashedPassword= sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashedPassword;
+    }
+    //a method to check that username and email are not in the file participants.txt already using a file reader
+    public boolean checkUsernameFile(String username) {
+        String line;
+        try {
+            BufferedReader bufferedFileReader = new BufferedReader(new FileReader("src/participants.txt"));
+            while ((line = bufferedFileReader.readLine()) != null) {
+                if (line.split(" ")[0].equalsIgnoreCase(username)) return true;
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
 }
