@@ -36,10 +36,6 @@ public class Server {
         }
     }
 
-    private void handleClient(Socket socket) {
-
-    }
-
     public void close(){
         try {
             serverSocket.close();
@@ -60,7 +56,7 @@ public class Server {
 
         if (dbo.checkSchoolExists(request[7])){
             try {
-                fileWriter=new FileWriter("src/participants.txt");
+                fileWriter=new FileWriter("src/participants.txt",true);
                 bufferedFileWriter = new BufferedWriter(fileWriter);
                 bufferedFileWriter.write(request[1]+" "+request[2]+" "+request[3]+" "+request[4]+" "+ hashPassword(request[5])+" "+request[6]+" "+request[7]+" "+request[8]);
                 bufferedFileWriter.newLine();
@@ -111,7 +107,7 @@ public class Server {
         try {
             BufferedReader bufferedFileReader = new BufferedReader(new FileReader("src/participants.txt"));
             while ((line = bufferedFileReader.readLine()) != null) {
-                if (line.split(" ")[0].equalsIgnoreCase(username)) return true;
+                if (line.split(" ")[0].equals(username)) return true;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());

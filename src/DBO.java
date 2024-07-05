@@ -114,7 +114,11 @@ public class DBO {
             if (resultSet.next()) return true;
             query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "'";
             resultSet = statement.executeQuery(query);
-            return resultSet.next();
+
+             if(resultSet.next()) return true;
+             query="SELECT * FROM mcms.rejected_participant WHERE username = '"+username+"'";
+                resultSet=statement.executeQuery(query);
+                return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

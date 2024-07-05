@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 
 public class Representative {
@@ -20,33 +21,66 @@ public class Representative {
         String line;
         DBO dbo = new DBO();
         dbo.connect();
-        try {
+        BufferedWriter bufferedFileWriter=null;
+        //create an arraylist to store the participants
+        ArrayList<String> participants = new ArrayList<>();
+        try( BufferedReader bufferedFileReader=new BufferedReader(new FileReader("src/participants.txt"));
+) {
             System.out.println(schoolRegNo);
-            bufferedFileReader=new BufferedReader(new FileReader("src/participants.txt"));
             String reply;
             while ((line = bufferedFileReader.readLine()) != null) {
                 // send line to server if the school registration number matches the school registration number of the representative
-                System.out.println(line.split(" ")[6]);
                 if (line.split(" ")[6].equalsIgnoreCase(schoolRegNo)){
-                Main.server.printWriter.println(line);
-                reply=Main.server.reader.readLine();
-                if (reply.equalsIgnoreCase("yes")) {
-                    dbo.insertParticipant(line.split(" "));
-                } else if (reply.equalsIgnoreCase("no") ){
-                    dbo.insertRejectedParticipant(line.split(" "));
+                    Main.server.printWriter.println(line);
+                    reply=Main.server.reader.readLine();
+                    if (reply.equalsIgnoreCase("yes"))
+                        dbo.insertParticipant(line.split(" "));
+                     else if (reply.equalsIgnoreCase("no") )
+                        dbo.insertRejectedParticipant(line.split(" "));
+                }else
+                //add to arraylist
+                {
+                    System.out.println(line);
+                    participants.add(line);
                 }
             }
+            System.out.println("clearing participants file");
+            //clear the participant file
+            clearFile("src/participants.txt");
+            //copy the contents of the arraylist to the participants file
+            for (String participant:participants){
+                try (BufferedWriter bufferedFileeWriter = new BufferedWriter(new FileWriter("src/participants.txt",true));
+                ){
+                    bufferedFileeWriter.write(participant);
+                    bufferedFileeWriter.newLine();
+                }
+
             }
-            //clear the file
-            BufferedWriter bufferedFileWriter = new BufferedWriter(new FileWriter("src/participants.txt"));
-            bufferedFileWriter.write("");
+
+            //clear the arrayilst
+            participants.clear();
+
+
             Main.server.printWriter.println("done");
 
-            }catch (IOException e){
+            //close the file reader
+            bufferedFileReader.close();
+
+        }catch (IOException e){
                 System.out.println(e.getMessage());
             }
         dbo.close();
 
 
+    }
+    //a method that clears a file given the file directory
+    public void clearFile(String fileDirectory ){
+        try {
+            BufferedWriter bufferedFileWriter = new BufferedWriter(new FileWriter(fileDirectory));
+            bufferedFileWriter.write("");
+            bufferedFileWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
