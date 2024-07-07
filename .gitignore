@@ -4,7 +4,7 @@ out/
 !**/src/test/**/out/
 ##prevent .properties files from being added to the repository
 *.properties
-
+*.txt
 
 ### Eclipse ###
 .apt_generated
