@@ -41,6 +41,9 @@ public class Main {
 
                                 } else if (server.checkUsernameFile(request[1])) {
                                     server.printWriter.println("invalid username");
+                                } else if ( server.imageToByteArray(request[8])==null) {
+                                    server.printWriter.println("invalid image");
+
                                 } else if(server.register(request)){
                                     server.printWriter.println("valid register");
                                 }else {

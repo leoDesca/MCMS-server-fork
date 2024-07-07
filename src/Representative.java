@@ -34,9 +34,9 @@ public class Representative {
                     Main.server.printWriter.println(line);
                     reply=Main.server.reader.readLine();
                     if (reply.equalsIgnoreCase("yes"))
-                        dbo.insertParticipant(line.split(" "));
+                        dbo.insertParticipant(line.split(" "),Main.server.imageToByteArray(line.split(" ")[7]));
                      else if (reply.equalsIgnoreCase("no") )
-                        dbo.insertRejectedParticipant(line.split(" "));
+                        dbo.insertRejectedParticipant(line.split(" "),Main.server.imageToByteArray(line.split(" ")[7]));
                 }else
                 //add to arraylist
                 {

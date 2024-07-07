@@ -90,18 +90,35 @@ public class DBO {
         }
     }
 
-    public void insertParticipant(String[] details) {
-        query = "INSERT INTO mcms.participant (username,fname,lname, email, password, dob, schoolRegNo, image) VALUES ('" + details[0] + "', '" + details[1] + "', '" + details[2] + "', '" + details[3] + "', '" + details[4] + "', '" + details[5] + "', '" + details[6] + "', '" + details[7] + "')";
-        try {
-            statement.executeUpdate(query);
+    public void insertParticipant(String[] details, byte[] image) {
+        query = "INSERT INTO mcms.participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, details[0]);
+            pstmt.setString(2, details[1]);
+            pstmt.setString(3, details[2]);
+            pstmt.setString(4, details[3]);
+            pstmt.setString(5, details[4]);
+            pstmt.setString(6, details[5]);
+            pstmt.setString(7, details[6]);
+            pstmt.setBytes(8, image);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();}
+            e.printStackTrace();
+        }
     }
 
-    public void insertRejectedParticipant(String[] details) {
-        query = "INSERT INTO mcms.rejected_participant (username,fname,lname, email, password, dob, schoolRegNo, image) VALUES ('" + details[0] + "', '" + details[1] + "', '" + details[2] + "', '" + details[3] + "', '" + details[4] + "', '" + details[5] + "', '" + details[6] + "', '" + details[7] + "')";
-        try {
-            statement.executeUpdate(query);
+    public void insertRejectedParticipant(String[] details, byte[] image) {
+        query = "INSERT INTO mcms.rejected_participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, details[0]);
+            pstmt.setString(2, details[1]);
+            pstmt.setString(3, details[2]);
+            pstmt.setString(4, details[3]);
+            pstmt.setString(5, details[4]);
+            pstmt.setString(6, details[5]);
+            pstmt.setString(7, details[6]);
+            pstmt.setBytes(8, image);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -136,6 +153,11 @@ public class DBO {
             return false;
         }
     }
+    // querry to store image byte array in the database
+
+
+
+
 
 
 

@@ -1,3 +1,5 @@
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.security.*;
@@ -115,4 +117,15 @@ public class Server {
         return false;
     }
 
+    public byte[] imageToByteArray(String imagePath) {
+        try {
+            BufferedImage bImage = ImageIO.read(new File(imagePath));
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(bImage, "png", bos);
+            return bos.toByteArray();
+        } catch (IOException e) {
+            System.out.println("Error converting image to byte array: " + e.getMessage());
+            return null;
+        }
+    }
 }
