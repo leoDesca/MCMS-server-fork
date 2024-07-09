@@ -1,6 +1,6 @@
 import java.io.IOException;
 import java.util.Arrays;
-//iugug
+
 
 public class Main {
     static Server server=null;
@@ -15,6 +15,7 @@ public class Main {
 
 
         initialCommands = new String[]{"register", "login"};
+
 
 
         try {

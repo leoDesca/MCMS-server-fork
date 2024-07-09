@@ -28,7 +28,7 @@ public class DBO {
     public void connect() {
         try {
             connection = DriverManager.getConnection(url, username, password);
-            statement = connection.createStatement();
+            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -230,6 +230,64 @@ public class DBO {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return resultSet.getString("rep_username");
             return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //a method to get all challenge names   from the database where the start date is less than the current date and the end date is greater than the current date
+    public String[] getChallenges()  {
+
+        query = "SELECT * FROM mcms.challenge WHERE challenge.challenge_start_date < CURDATE() AND challenge.challenge_end_date > CURDATE();";
+        try {
+            resultSet = statement.executeQuery(query);
+            //return null if resultset is empty
+            if (!resultSet.next()) return null;
+            resultSet.last();
+            String[] challenges = new String[resultSet.getRow()];
+            resultSet.beforeFirst();
+            int i = 0;
+            while (resultSet.next()) {
+                challenges[i] = "Challenge name : "+resultSet.getString("challenge_name").toUpperCase()+"\nChallenge Description: " +resultSet.getString("challenge_description");
+                i++;
+            }
+            return challenges;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    //get participant details
+    public String[] getParticipantDetails(String username) {
+        query = "SELECT * FROM mcms.participant WHERE username = '" + username + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            resultSet.next();
+            return new String[]{resultSet.getString("username"), resultSet.getString("fname"), resultSet.getString("lname"), resultSet.getString("email"), resultSet.getString("dob"), resultSet.getString("schoolRegNo")};
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    //check challenge exists
+    public boolean checkChallengeExists(String challengeName) {
+        query = "SELECT * FROM mcms.challenge WHERE challenge_name = '" + challengeName + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String[] getChallengeDetails(String challengeName) {
+        query = "SELECT * FROM mcms.challenge WHERE challenge_name = '" + challengeName + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            resultSet.next();
+            return new String[]{resultSet.getString("challenge_name"), resultSet.getString("challenge_description"), resultSet.getString("duration"), resultSet.getString("questions_to_answer"),resultSet.getString("wrong_answer_marks")};
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

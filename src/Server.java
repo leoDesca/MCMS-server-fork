@@ -55,16 +55,6 @@ public class Server {
         DBO dbo=new DBO();
 
         dbo.connect();
-        Mail mail = new Mail();
-        String subject = "Registration Notification";
-        String body = """
-                Dear %s,
-                A pupil %s from your school has registered for the Mathematics Competition Management System.
-                Login to validate the pupil.
-                """;
-        //send email to the school
-        mail.sendMail(dbo.getSchoolEmail(request[7]), subject, String.format(body, dbo.getRepUsername(request[7]), request[1] + " " + request[2]));
-
 
         if (dbo.checkSchoolExists(request[7])){
             try {
@@ -86,7 +76,12 @@ public class Server {
     public void login(String[] request) {
         DBO dbo = new DBO();
         dbo.connect();
-        if (dbo.checkParticipant(request[1],hashPassword(request[2]) )) printWriter.println("participant "+request[1]);
+        if (dbo.checkParticipant(request[1],hashPassword(request[2]) )){
+            printWriter.println("participant "+request[1]);
+            Participant participant = new Participant(dbo.getParticipantDetails(request[1]));
+            participant.start();
+
+        }
         else if (dbo.checkRepresentative(request[1],hashPassword(request[2]) )) {
             printWriter.println("representative "+request[1]);
             Representative rep = new Representative(dbo.getRepresentative(request[1]));
