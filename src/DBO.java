@@ -287,10 +287,36 @@ public class DBO {
         try {
             resultSet = statement.executeQuery(query);
             resultSet.next();
-            return new String[]{resultSet.getString("challenge_name"), resultSet.getString("challenge_description"), resultSet.getString("duration"), resultSet.getString("questions_to_answer"),resultSet.getString("wrong_answer_marks")};
+            return new String[]{resultSet.getString("challenge_name"), resultSet.getString("challenge_description"), resultSet.getString("duration"), resultSet.getString("questions_to_answer"),resultSet.getString("wrong_answer_marks"), resultSet.getString("blank_answer_marks"), resultSet.getString("challenge_start_date"), resultSet.getString("challenge_end_date"), resultSet.getString("challenge_id")};
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
+//get random questions and their answers from question table where challenge id is equal to the challenge id
+    public String[][] getQuestions(String id, int questions) {
+
+        query = "SELECT * FROM mcms.question WHERE challenge_id = '" + id + "' ORDER BY RAND() LIMIT " + questions;
+        try {
+            resultSet = statement.executeQuery(query);
+            resultSet.last();
+            String[][] questionArray = new String[resultSet.getRow()][5];
+            resultSet.beforeFirst();
+            int i = 0;
+            while (resultSet.next()) {
+                questionArray[i][0] = resultSet.getString("question");
+                questionArray[i][1] = resultSet.getString("answer");
+                questionArray[i][2] = resultSet.getString("question_id");
+                questionArray[i][3] = resultSet.getString("challenge_id");
+                questionArray[i][4] = resultSet.getString("marks");
+                i++;
+            }
+            return questionArray;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+
 }
