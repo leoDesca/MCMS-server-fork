@@ -16,8 +16,14 @@ public class Main {
 
         initialCommands = new String[]{"register", "login"};
 
+        start();
 
 
+
+
+
+    }
+    public static void start(){
         try {
             while(true) {
 //                System.out.println(server.hashPassword("arthur"));
@@ -80,8 +86,5 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-
     }
 }

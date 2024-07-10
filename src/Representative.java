@@ -18,8 +18,12 @@ public class Representative {
     }
 
     public void validateParticipant() {
+        Emails emails = new Emails();
 
-        String line;
+        String line=null;
+
+        String emailP;
+
         DBO dbo = new DBO();
         dbo.connect();
         BufferedWriter bufferedFileWriter=null;
@@ -30,15 +34,23 @@ public class Representative {
             System.out.println(schoolRegNo);
             String reply;
             if ((reply=Main.server.reader.readLine()).equalsIgnoreCase("yes")) {
-
-
                 while ((line = bufferedFileReader.readLine()) != null) {
                     // send line to server if the school registration number matches the school registration number of the representative
                     if (line.split(" ")[6].equalsIgnoreCase(schoolRegNo)) {
                         Main.server.printWriter.println(line);
                         reply = Main.server.reader.readLine();
-                        if (reply.equalsIgnoreCase("yes"))
+                        if (reply.equalsIgnoreCase("yes")){
                             dbo.insertParticipant(line.split(" "), Main.server.imageToByteArray(line.split(" ")[7]));
+                            //parts of the representative's email to remind them to verify the participant
+                            String subject = "Participant Validation";
+                            String body = "Dear "+name+",\n\nYou have a participant "+line.split(" ")[1].toUpperCase()+" "+line.split(" ")[2].toUpperCase()+" to validate. Please login to the system to validate the participant.\n\nRegards,\nG4MCMS";
+                            //participant's email telling them to wait for confirmation
+                            String participantSubject = "Participant Confirmation";
+                            String participantBody = "Dear "+line.split(" ")[1].toUpperCase() +",\n\nThank you for registering for the competition. You have been confirmed by yor school representative.\nYou can now login to view or attempt challenges.\nNumbers don't lie!!!!!\n\nRegards,\nG4MCMS";
+                            emails.sendEmail(email,subject,body);
+                            emailP = line.split(" ")[3];
+                            emails.sendEmail(emailP,participantSubject,participantBody);
+                        }
                         else if (reply.equalsIgnoreCase("no"))
                             dbo.insertRejectedParticipant(line.split(" "), Main.server.imageToByteArray(line.split(" ")[7]));
                     } else
@@ -67,6 +79,7 @@ public class Representative {
 
 
             Main.server.printWriter.println("done");
+
 
             //close the file reader
             bufferedFileReader.close();

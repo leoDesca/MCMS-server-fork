@@ -21,7 +21,7 @@ public class DBO {
             this.username = prop.getProperty("db.user");
             this.password = prop.getProperty("db.password");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -30,7 +30,7 @@ public class DBO {
             connection = DriverManager.getConnection(url, username, password);
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public class DBO {
             connection.close();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class DBO {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -61,7 +61,7 @@ public class DBO {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -73,7 +73,7 @@ public class DBO {
             resultSet.next();
             return new String[]{resultSet.getString("rep_username"), resultSet.getString("rep_fname"), resultSet.getString("rep_lname"), resultSet.getString("rep_email"), resultSet.getString("school_regNo")};
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -86,7 +86,7 @@ public class DBO {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -104,7 +104,7 @@ public class DBO {
             pstmt.setBytes(8, image);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -121,7 +121,7 @@ public class DBO {
             pstmt.setBytes(8, image);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -139,7 +139,7 @@ public class DBO {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -151,7 +151,7 @@ public class DBO {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -167,23 +167,11 @@ public class DBO {
             if (resultSet.next()) return resultSet.getString("rep_email");
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
 
-    //method to get an email from school_representative using school reg number
-    public String getSchoolEmail(String school) {
-        query = "SELECT rep_email FROM mcms.school_representative WHERE school_regNo = '" + school + "'";
-        try {
-            resultSet = statement.executeQuery(query);
-            if (resultSet.next()) return resultSet.getString("rep_email");
-            return null;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     //method to get the image of a participant
     public byte[] getImage(String username) {
@@ -193,7 +181,7 @@ public class DBO {
             if (resultSet.next()) return resultSet.getBytes("image");
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -206,7 +194,7 @@ public class DBO {
             if (resultSet.next()) return resultSet.getBytes("image");
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -219,7 +207,7 @@ public class DBO {
             if (resultSet.next()) return resultSet.getBytes("image");
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -231,7 +219,7 @@ public class DBO {
             if (resultSet.next()) return resultSet.getString("rep_username");
             return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -264,9 +252,9 @@ public class DBO {
         try {
             resultSet = statement.executeQuery(query);
             resultSet.next();
-            return new String[]{resultSet.getString("username"), resultSet.getString("fname"), resultSet.getString("lname"), resultSet.getString("email"), resultSet.getString("dob"), resultSet.getString("schoolRegNo")};
+            return new String[]{resultSet.getString("username"), resultSet.getString("fname"), resultSet.getString("lname"), resultSet.getString("email"), resultSet.getString("dob"), resultSet.getString("schoolRegNo"), resultSet.getString("participant_id")};
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -277,7 +265,7 @@ public class DBO {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -289,7 +277,7 @@ public class DBO {
             resultSet.next();
             return new String[]{resultSet.getString("challenge_name"), resultSet.getString("challenge_description"), resultSet.getString("duration"), resultSet.getString("questions_to_answer"),resultSet.getString("wrong_answer_marks"), resultSet.getString("blank_answer_marks"), resultSet.getString("challenge_start_date"), resultSet.getString("challenge_end_date"), resultSet.getString("challenge_id")};
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -313,10 +301,51 @@ public class DBO {
             }
             return questionArray;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
         
     }
+//insert into participant challenge table
+    public void insertIntoParticipantChallenge(int score, String cId, int pId, String startDateTime, String endDateTime) {
+        query = "INSERT INTO mcms.participant_challenge (score, challenge_id, participant_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, score);
+            pstmt.setInt(2, Integer.parseInt(cId));
+            pstmt.setInt(3, pId);
+            pstmt.setString(4, startDateTime);
+            pstmt.setString(5, endDateTime);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+
+    //get the participant challenge id
+    public int getParticipantChallengeId(int pId, String cId, String startDateTime) {
+        query = "SELECT participant_challenge_id FROM mcms.participant_challenge WHERE participant_id = " + pId + " AND challenge_id = " + cId + " AND start_time = '" + startDateTime + "'";
+        try {
+            resultSet = statement.executeQuery(query);
+            resultSet.next();
+            return resultSet.getInt("participant_challenge_id");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+//insert into participant answers table
+
+    public void insertIntoParticipantAnswers(int challengeId, String qId, String answer, String marks) {
+        query = "INSERT INTO mcms.participant_answer (participant_answer.participant_challenge_id, question_id, answer,marks) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, challengeId);
+            pstmt.setInt(2, Integer.parseInt(qId));
+            pstmt.setString(3, answer);
+            pstmt.setInt(4, Integer.parseInt(marks));
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

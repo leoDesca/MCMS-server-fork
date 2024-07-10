@@ -64,6 +64,8 @@ public class Server {
                 bufferedFileWriter.newLine();
                 bufferedFileWriter.close();
                 fileWriter.close();
+                Emails emails = new Emails();
+                emails.sendEmail(request[4],"Registration","You have successfully registered for the competition\n Please wait for confirmation from your school representative\n\nRegards,\nG4MCMS");
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

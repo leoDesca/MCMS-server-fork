@@ -2,13 +2,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class Participant {
+    private final String username;
+    private final String fullName;
+    private final String email;
     private int participantId;
 
     public Participant(String[] details) {
 
-        String username = details[0];
-        String email = details[3];
-        String fullName= details[1].toUpperCase()+" "+details[2].toUpperCase();
+         this.username = details[0];
+        this.email = details[3];
+        this.fullName= details[1].toUpperCase()+" "+details[2].toUpperCase();
+        this.participantId=Integer.parseInt(details[6]);
 
     }
 
@@ -54,7 +58,7 @@ public class Participant {
             }
             else if (command.equalsIgnoreCase("attempt challenge")){
 
-                attemptChallenge();
+                viewChallenges();
                 command=Main.server.reader.readLine().strip();
                 DBO dbo = new DBO();
                 dbo.connect();
@@ -71,11 +75,14 @@ public class Participant {
                     String response=Main.server.reader.readLine().strip();
                     //if the response is start, send the questions to the client
                     if(response.equalsIgnoreCase("start")){
-                        challenge.showQuestions(challenge.getQuestions());
+                        challenge.showQuestions(challenge.getQuestions(),email,participantId,fullName);
+                        start();
                     }
 
 
 //                Main.server.printWriter.println(details);
+                }else if (command.equalsIgnoreCase("exit")){
+                    Main.start();
                 }else {
                     Main.server.printWriter.println("invalid challenge");
                 }
