@@ -8,6 +8,7 @@ public class Participant extends User{
     public void register(String fName, String lName, String email, int Phone, String schoolRegNo ){
 
     };
+
     public void viewChallenges(){
 
     }
