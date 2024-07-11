@@ -1,3 +1,5 @@
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.security.*;
@@ -36,10 +38,6 @@ public class Server {
         }
     }
 
-    private void handleClient(Socket socket) {
-
-    }
-
     public void close(){
         try {
             serverSocket.close();
@@ -60,12 +58,14 @@ public class Server {
 
         if (dbo.checkSchoolExists(request[7])){
             try {
-                fileWriter=new FileWriter("src/participants.txt");
+                fileWriter=new FileWriter("src/participants.txt",true);
                 bufferedFileWriter = new BufferedWriter(fileWriter);
                 bufferedFileWriter.write(request[1]+" "+request[2]+" "+request[3]+" "+request[4]+" "+ hashPassword(request[5])+" "+request[6]+" "+request[7]+" "+request[8]);
                 bufferedFileWriter.newLine();
                 bufferedFileWriter.close();
                 fileWriter.close();
+                Emails emails = new Emails();
+                emails.sendEmail(request[4],"Registration","You have successfully registered for the competition\n Please wait for confirmation from your school representative\n\nRegards,\nG4MCMS");
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -78,7 +78,12 @@ public class Server {
     public void login(String[] request) {
         DBO dbo = new DBO();
         dbo.connect();
-        if (dbo.checkParticipant(request[1],hashPassword(request[2]) )) printWriter.println("participant "+request[1]);
+        if (dbo.checkParticipant(request[1],hashPassword(request[2]) )){
+            printWriter.println("participant "+request[1]);
+            Participant participant = new Participant(dbo.getParticipantDetails(request[1]));
+            participant.start();
+
+        }
         else if (dbo.checkRepresentative(request[1],hashPassword(request[2]) )) {
             printWriter.println("representative "+request[1]);
             Representative rep = new Representative(dbo.getRepresentative(request[1]));
@@ -111,7 +116,7 @@ public class Server {
         try {
             BufferedReader bufferedFileReader = new BufferedReader(new FileReader("src/participants.txt"));
             while ((line = bufferedFileReader.readLine()) != null) {
-                if (line.split(" ")[0].equalsIgnoreCase(username)) return true;
+                if (line.split(" ")[0].equals(username)) return true;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -119,4 +124,15 @@ public class Server {
         return false;
     }
 
+    public byte[] imageToByteArray(String imagePath) {
+        try {
+            BufferedImage bImage = ImageIO.read(new File(imagePath));
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(bImage, "png", bos);
+            return bos.toByteArray();
+        } catch (IOException e) {
+            System.out.println("Error converting image to byte array: " + e.getMessage());
+            return null;
+        }
+    }
 }

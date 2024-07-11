@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.Arrays;
 
+
 public class Main {
     static Server server=null;
     static String[] request;
@@ -10,12 +11,19 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
 
-        main.server=new Server(3333);
+        server=new Server(3333);
 
 
-        main.initialCommands = new String[]{"register", "login"};
+        initialCommands = new String[]{"register", "login"};
+
+        start();
 
 
+
+
+
+    }
+    public static void start(){
         try {
             while(true) {
 //                System.out.println(server.hashPassword("arthur"));
@@ -41,6 +49,9 @@ public class Main {
 
                                 } else if (server.checkUsernameFile(request[1])) {
                                     server.printWriter.println("invalid username");
+                                } else if ( server.imageToByteArray(request[8])==null) {
+                                    server.printWriter.println("invalid image");
+
                                 } else if(server.register(request)){
                                     server.printWriter.println("valid register");
                                 }else {
@@ -75,8 +86,5 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-
     }
 }
