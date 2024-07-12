@@ -43,7 +43,7 @@ public class Representative {
                             dbo.insertParticipant(line.split(" "), Main.server.imageToByteArray(line.split(" ")[7]));
                             //parts of the representative's email to remind them to verify the participant
                             String subject = "Participant Validation";
-                            String body = "Dear "+name+",\n\nYou have a participant "+line.split(" ")[1].toUpperCase()+" "+line.split(" ")[2].toUpperCase()+" to validate. Please login to the system to validate the participant.\n\nRegards,\nG4MCMS";
+                            String body = "Dear "+name+",\n\nYou have a participant "+line.split(" ")[1].toUpperCase()+" "+line.split(" ")[2].toUpperCase()+" to validate. Please login to the system to validate the participant.\n Thank you\nRegards,\nG4MCMS";
                             //participant's email telling them to wait for confirmation
                             String participantSubject = "Participant Confirmation";
                             String participantBody = "Dear "+line.split(" ")[1].toUpperCase() +",\n\nThank you for registering for the competition. You have been confirmed by yor school representative.\nYou can now login to view or attempt challenges.\nNumbers don't lie!!!!!\n\nRegards,\nG4MCMS";
@@ -61,8 +61,8 @@ public class Representative {
                     }
                 }
             }
+            //clear the participants file
             System.out.println("clearing participants file");
-            //clear the participant file
             clearFile("src/participants.txt");
             //copy the contents of the arraylist to the participants file
             for (String participant:participants){

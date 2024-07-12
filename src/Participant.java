@@ -1,6 +1,6 @@
 import java.io.IOException;
 import java.time.LocalDateTime;
-
+// participant class
 public class Participant {
     private final String username;
     private final String fullName;
@@ -16,7 +16,7 @@ public class Participant {
 
     }
 
-
+//method to view challenges
     public void viewChallenges(){
         DBO dbo = new DBO();
         dbo.connect();
@@ -36,14 +36,39 @@ public class Participant {
         dbo.close();
 
     }
-    public void attemptChallenge()  {
+    //method that allows the participant to attempt a challenge 
+     public void attemptChallenge()  {
             viewChallenges();
+            // Modified method to accept a challenge identifier and attempt it three times
+//public void attemptChallenge(String challengeId) {
+    //DBO dbo = new DBO();
+ //   dbo.connect();
+    // Assuming getChallengeById is a method to fetch a specific challenge by its ID
+   // String challenge = dbo.getChallengeById(challengeId);
+    
+  //  if (challenge == null) {
+      //  System.out.println("Challenge not found");
+      //  return;
+   // }
+    
+    // Attempt the challenge three times
+   // for (int i = 0; i < 3; i++) {
+      //  System.out.println("Attempting challenge: " + challenge);
+        // Here, you would add the logic to actually attempt the challenge
+        // For demonstration, we're just printing a message
+       // System.out.println("Attempt " + (i + 1) + " completed");
+  //  }
+    
+    //dbo.close();
+}
 
 
 
 
 
     };
+
+    public void viewChallenges(){
 
     public void start() {
         String command;
@@ -80,7 +105,6 @@ public class Participant {
                     }
 
 
-//                Main.server.printWriter.println(details);
                 }else if (command.equalsIgnoreCase("exit")){
                     Main.start();
                 }else {

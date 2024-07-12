@@ -11,7 +11,7 @@ public class DBO {
     private String url;
     private String username;
     private String password;
-
+//method to connect to the database
     public DBO() {
         try (FileInputStream fis = new FileInputStream("src/db.properties")) {
             Properties prop = new Properties();
@@ -43,7 +43,7 @@ public class DBO {
         }
     }
 
-
+//method to check if a participant exists in the database
     public boolean checkParticipant(String username, String password) {
         query = "SELECT * FROM mcms.participant WHERE username = '" + username + "' AND password = '" + password + "'";
         try {
@@ -54,7 +54,7 @@ public class DBO {
             return false;
         }
     }
-
+//method to check if a school representative exists in the database
     public boolean checkRepresentative(String username, String password) {
         query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "' AND rep_password = '" + password + "'";
         try {
@@ -65,7 +65,7 @@ public class DBO {
             return false;
         }
     }
-
+//method to get the details of a representative
     public String[] getRepresentative(String username) {
         query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "'";
         try {
@@ -90,7 +90,7 @@ public class DBO {
             return false;
         }
     }
-
+//method to insert a participant into the database
     public void insertParticipant(String[] details, byte[] image) {
         query = "INSERT INTO mcms.participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -107,7 +107,7 @@ public class DBO {
             System.out.println(e.getMessage());
         }
     }
-
+//method to insert a rjected participant into the rejected_participant table
     public void insertRejectedParticipant(String[] details, byte[] image) {
         query = "INSERT INTO mcms.rejected_participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -269,7 +269,7 @@ public class DBO {
             return false;
         }
     }
-
+//get challenge details 
     public String[] getChallengeDetails(String challengeName) {
         query = "SELECT * FROM mcms.challenge WHERE challenge_name = '" + challengeName + "'";
         try {
