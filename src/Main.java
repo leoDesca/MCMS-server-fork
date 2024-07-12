@@ -6,11 +6,11 @@ public class Main {
     static Server server=null;
     static String[] request;
    static  String[] initialCommands;
-    //handles the
+    //handles the main logic of the server
 
     public static void main(String[] args) {
         Main main = new Main();
-
+//create a server object
         server=new Server(3333);
 
 
@@ -23,10 +23,11 @@ public class Main {
 
 
     }
+    //method to start the server
     public static void start(){
         try {
             while(true) {
-//                System.out.println(server.hashPassword("arthur"));
+             System.out.println("listening");
                 request = server.reader.readLine().strip().split(" ");
 
 
@@ -35,13 +36,14 @@ public class Main {
                     DBO dbo = new DBO();
                     dbo.connect();
 
-
+//check if the request is valid
+                    System .out .println("valid");
                     switch (request[0]) {
                         case "register":
                             if ( request.length==9) {
                                 if (dbo.checkUsername(request[1])){
                                     server.printWriter.println("invalid username");
-
+//check if the participant has been rejected
                                 }else if (dbo.checkRejectedParticipant(request[1])){
                                     server.printWriter.println("invalid rejected");
                                 } else if (dbo.checkParticipant(request[1],request[5] )) {
@@ -61,6 +63,7 @@ public class Main {
                                 server.printWriter.println("invalid values");
                             }
                             break;
+                            //login section
                         case "login":
                             if (request.length == 3) {
                                 server.printWriter.println("valid login");

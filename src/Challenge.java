@@ -70,7 +70,7 @@ public class Challenge {
             long remainingTime = endTime - System.currentTimeMillis();
             if(remainingTime<=0){
                 timeUsed=10;
-                Main.server.printWriter.println("Time is up!!");
+                Main.server.printWriter.println(" Your Time is up!!");
                 break;
             }
             Main.server.printWriter.println("Time left: "+remainingTime/60000+" minutes and "+(remainingTime%60000)/1000+" seconds Questions left: "+(questions.size()-(i+1)));
@@ -118,7 +118,7 @@ public class Challenge {
         Main.server.printWriter.println("Your score is: "+score+" out of "+questions.size()+" questions and you finished in "+timeUsed+" minutes");
         Emails emails = new Emails();
         String subject = "Challenge Results";
-        String body = "Dear "+fullName+",\n\nYou have completed the challenge "+name+" and your score is "+score+".You finished the challenge in "+timeUsed+" minutes.\nYou answered "+answered+" questions.\n\nRegards,\nG4MCMS";
+        String body = "Dear "+fullName+",\n\nYou have completed the challenge "+name+" and your score is "+score+".You finished the challenge in "+timeUsed+" minutes.\nYou answered "+answered+" questions.\n\n Thank you for attempting Regards,\nG4MCMS";
         try {
             emails.sendEmail(pEmail,subject,body);
         } catch (FileNotFoundException e) {
