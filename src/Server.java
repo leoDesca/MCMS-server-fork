@@ -10,7 +10,6 @@ public class Server {
     protected BufferedReader reader=null;
     protected PrintWriter printWriter=null;
     protected FileWriter fileWriter=null;
-
     protected BufferedWriter bufferedFileWriter=null;
 
 
@@ -29,15 +28,10 @@ public class Server {
 
             // configuring output stream
             printWriter=new PrintWriter(socket.getOutputStream(),true);
-
-
-
-
         }catch (IOException e){
             System.out.println(e.getMessage());
         }
     }
-
     public void close(){
         try {
             serverSocket.close();
@@ -48,14 +42,10 @@ public class Server {
             System.out.println(e.getMessage());
             return;
         }
-
     }
-
     public boolean register(String[] request) {
         DBO dbo=new DBO();
-
         dbo.connect();
-
         if (dbo.checkSchoolExists(request[7])){
             try {
                 fileWriter=new FileWriter("src/participants.txt",true);
@@ -69,12 +59,11 @@ public class Server {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
+            dbo.close();
+
             return true;
         } else return false;
-
-
     }
-
     public void login(String[] request) {
         DBO dbo = new DBO();
         dbo.connect();
@@ -82,7 +71,7 @@ public class Server {
             printWriter.println("participant "+request[1]);
             Participant participant = new Participant(dbo.getParticipantDetails(request[1]));
             participant.start();
-
+            dbo.close();
         }
         else if (dbo.checkRepresentative(request[1],hashPassword(request[2]) )) {
             printWriter.println("representative "+request[1]);
@@ -91,7 +80,6 @@ public class Server {
             dbo.close();
         }
         else printWriter.println("invalid");
-
     }
     //a method to hash the password
     public String hashPassword(String password){

@@ -237,7 +237,7 @@ public class DBO {
             resultSet.beforeFirst();
             int i = 0;
             while (resultSet.next()) {
-                challenges[i] = "Challenge name : "+resultSet.getString("challenge_name").toUpperCase()+"\nChallenge Description: " +resultSet.getString("challenge_description");
+                challenges[i] = "Challenge name : "+resultSet.getString("challenge_name").toUpperCase()+"\nChallenge Description: " +resultSet.getString("challenge_description")+"\nChallenge Start date: "+resultSet.getString("challenge_start_date")+"\nChallenge end date: "+resultSet.getString("challenge_end_date");
                 i++;
             }
             return challenges;

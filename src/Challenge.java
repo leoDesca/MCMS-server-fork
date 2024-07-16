@@ -69,7 +69,7 @@ public class Challenge {
             String sol=null;
             long remainingTime = endTime - System.currentTimeMillis();
             if(remainingTime<=0){
-                timeUsed=10;
+                timeUsed=duration;
                 Main.server.printWriter.println("Time is up!!");
                 break;
             }
@@ -148,6 +148,25 @@ public class Challenge {
         dbo.close();
 
 
+
+    }
+    public static void viewChallenges(){
+        DBO dbo = new DBO();
+        dbo.connect();
+        //view all challenges
+        String[] challenges= dbo.getChallenges();
+        System.out.println(challenges.length);
+        //if challenges is empty return no challenges
+
+        if (challenges.length==0) Main.server.printWriter.println("no challenges");
+        else {
+            for (String challenge : challenges) {
+                Main.server.printWriter.println(challenge);
+            }
+            Main.server.printWriter.println("done");
+            System.out.println("done");
+        }
+        dbo.close();
 
     }
 

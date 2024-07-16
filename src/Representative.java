@@ -31,7 +31,7 @@ public class Representative {
         ArrayList<String> participants = new ArrayList<>();
         try( BufferedReader bufferedFileReader=new BufferedReader(new FileReader("src/participants.txt"));
 ) {
-            System.out.println(schoolRegNo);
+//            System.out.println(schoolRegNo);
             String reply;
             if ((reply=Main.server.reader.readLine()).equalsIgnoreCase("yes")) {
                 while ((line = bufferedFileReader.readLine()) != null) {
@@ -60,6 +60,8 @@ public class Representative {
                         participants.add(line);
                     }
                 }
+            }else if (reply.equalsIgnoreCase("no")){
+                Main.start();
             }
             System.out.println("clearing participants file");
             //clear the participant file
