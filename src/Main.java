@@ -3,15 +3,15 @@ import java.util.Arrays;
 
 
 public class Main {
-    static Server server=null;
+    static Server server = null;
     static String[] request;
-   static  String[] initialCommands;
-    //handles the
+    static String[] initialCommands;
+    //handles the main logic of the server
 
     public static void main(String[] args) {
         Main main = new Main();
-
-        server=new Server(3333);
+//create a server object
+        server = new Server(3333);
 
 
         initialCommands = new String[]{"register", "login"};
@@ -19,14 +19,13 @@ public class Main {
         start();
 
 
-
-
-
     }
-    public static void start(){
+
+    //method to start the server
+    public static void start() {
         try {
-            while(true) {
-//                System.out.println(server.hashPassword("arthur"));
+            while (true) {
+                System.out.println("listening");
                 request = server.reader.readLine().strip().split(" ");
 
 
@@ -35,10 +34,12 @@ public class Main {
                     DBO dbo = new DBO();
                     dbo.connect();
 
-
+//check if the request is valid
+                    System.out.println("valid");
                     switch (request[0]) {
                         case "register":
-                            if ( request.length==9) {
+                            if (request.length == 9) {
+
                                 if (dbo.checkUsername(request[1])) server.printWriter.println("invalid username");
                                 else if (dbo.checkRejectedParticipant(request[1]))
                                     server.printWriter.println("invalid rejected");
@@ -50,13 +51,15 @@ public class Main {
                                     server.printWriter.println("invalid image");
                                 else if (server.register(request)) server.printWriter.println("valid register");
                                 else server.printWriter.println("invalid school");
-                            }else server.printWriter.println("invalid values");
+                            } else server.printWriter.println("invalid values");
                             break;
+                        //login section
                         case "login":
                             if (request.length == 3) {
                                 server.printWriter.println("valid login");
                                 server.login(request);
-                            }else server.printWriter.println("Incomplete command. please enter all the required fields");
+                            } else
+                                server.printWriter.println("Incomplete command. please enter all the required fields");
                             break;
                         case "exit":
                             server.close();
@@ -64,14 +67,15 @@ public class Main {
                         default:
                             server.printWriter.println("invalid");
                     }
+
                 } else {
                     System.out.println("invalid");
                     server.printWriter.println("invalid");
                 }
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 }

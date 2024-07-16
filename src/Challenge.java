@@ -118,7 +118,7 @@ public class Challenge {
         Main.server.printWriter.println("Your score is: "+score+" out of "+questions.size()+" questions and you finished in "+timeUsed+" minutes");
         Emails emails = new Emails();
         String subject = "Challenge Results";
-        String body = "Dear "+fullName+",\n\nYou have completed the challenge "+name+" and your score is "+score+".You finished the challenge in "+timeUsed+" minutes.\nYou answered "+answered+" questions.\n\nRegards,\nG4MCMS";
+        String body = "Dear "+fullName+",\n\nYou have completed the challenge "+name+" and your score is "+score+".You finished the challenge in "+timeUsed+" minutes.\nYou answered "+answered+" questions.\n\n Thank you for attempting Regards,\nG4MCMS";
         try {
             emails.sendEmail(pEmail,subject,body);
         } catch (FileNotFoundException e) {

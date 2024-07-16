@@ -32,6 +32,7 @@ public class Server {
             System.out.println(e.getMessage());
         }
     }
+// closing the server
     public void close(){
         try {
             serverSocket.close();
@@ -46,6 +47,7 @@ public class Server {
     public boolean register(String[] request) {
         DBO dbo=new DBO();
         dbo.connect();
+//check if the school exists
         if (dbo.checkSchoolExists(request[7])){
             try {
                 fileWriter=new FileWriter("src/participants.txt",true);
@@ -55,7 +57,7 @@ public class Server {
                 bufferedFileWriter.close();
                 fileWriter.close();
                 Emails emails = new Emails();
-                emails.sendEmail(request[4],"Registration","You have successfully registered for the competition\n Please wait for confirmation from your school representative\n\nRegards,\nG4MCMS");
+                emails.sendEmail(request[4],"Registration","You have successfully registered for the competition\n Please wait for confirmation email from your school representative\n\nRegards,\nG4MCMS");
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -64,6 +66,7 @@ public class Server {
             return true;
         } else return false;
     }
+// login method
     public void login(String[] request) {
         DBO dbo = new DBO();
         dbo.connect();
