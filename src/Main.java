@@ -25,7 +25,7 @@ public class Main {
     public static void start() {
         try {
             while (true) {
-                System.out.println("listening");
+//                System.out.println("listening");
                 request = server.reader.readLine().strip().split(" ");
 
 

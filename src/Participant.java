@@ -67,8 +67,6 @@ public class Participant {
                         default:
                             Main.server.printWriter.println("invalid command");
                             start();
-
-
                     }
                 }
                 else {
