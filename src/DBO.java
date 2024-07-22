@@ -45,7 +45,7 @@ public class DBO {
 
 //method to check if a participant exists in the database
     public boolean checkParticipant(String username, String password) {
-        query = "SELECT * FROM mcms.participant WHERE username = '" + username + "' AND password = '" + password + "'";
+        query = "SELECT * FROM participant WHERE username = '" + username + "' AND password = '" + password + "'";
         try {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
@@ -56,7 +56,7 @@ public class DBO {
     }
 //method to check if a school representative exists in the database
     public boolean checkRepresentative(String username, String password) {
-        query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "' AND rep_password = '" + password + "'";
+        query = "SELECT * FROM school_representative WHERE rep_username = '" + username + "' AND rep_password = '" + password + "'";
         try {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
@@ -67,7 +67,7 @@ public class DBO {
     }
 //method to get the details of a representative
     public String[] getRepresentative(String username) {
-        query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "'";
+        query = "SELECT * FROM school_representative WHERE rep_username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             resultSet.next();
@@ -81,7 +81,7 @@ public class DBO {
     //method to check for school registration number
 
     public boolean checkSchoolExists(String school) {
-        query = "SELECT * FROM mcms.school_representative WHERE school_regNo = '" + school + "'";
+        query = "SELECT * FROM school_representative WHERE school_regNo = '" + school + "'";
         try {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
@@ -92,7 +92,7 @@ public class DBO {
     }
 //method to insert a participant into the database
     public void insertParticipant(String[] details, byte[] image) {
-        query = "INSERT INTO mcms.participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        query = "INSERT INTO participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, details[0]);
             pstmt.setString(2, details[1]);
@@ -109,7 +109,7 @@ public class DBO {
     }
 //method to insert a rjected participant into the rejected_participant table
     public void insertRejectedParticipant(String[] details, byte[] image) {
-        query = "INSERT INTO mcms.rejected_participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        query = "INSERT INTO rejected_participant (username, fname, lname, email, password, dob, schoolRegNo, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, details[0]);
             pstmt.setString(2, details[1]);
@@ -127,15 +127,15 @@ public class DBO {
 
     //method to check whether username is in either participant tables or school_representative table
     public boolean checkUsername(String username) {
-        query = "SELECT * FROM mcms.participant WHERE username = '" + username + "'";
+        query = "SELECT * FROM participant WHERE username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return true;
-            query = "SELECT * FROM mcms.school_representative WHERE rep_username = '" + username + "'";
+            query = "SELECT * FROM school_representative WHERE rep_username = '" + username + "'";
             resultSet = statement.executeQuery(query);
 
             if (resultSet.next()) return true;
-            query = "SELECT * FROM mcms.rejected_participant WHERE username = '" + username + "'";
+            query = "SELECT * FROM rejected_participant WHERE username = '" + username + "'";
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
@@ -146,7 +146,7 @@ public class DBO {
 
     //method to check whether a participant has been registered in either rejected_participant table
     public boolean checkRejectedParticipant(String username) {
-        query = "SELECT * FROM mcms.rejected_participant WHERE username = '" + username + "'";
+        query = "SELECT * FROM rejected_participant WHERE username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
@@ -156,13 +156,13 @@ public class DBO {
         }
     }
 
-    //method to  get an email from mcmcs.participant and mcms.school_represenatative that takes username
+    //method to  get an email from mcmcs.participant and laravelll.school_represenatative that takes username
     public String getEmail(String username) {
-        query = "SELECT email FROM mcms.participant WHERE username = '" + username + "'";
+        query = "SELECT email FROM participant WHERE username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return resultSet.getString("email");
-            query = "SELECT rep_email FROM mcms.school_representative WHERE rep_username = '" + username + "'";
+            query = "SELECT rep_email FROM school_representative WHERE rep_username = '" + username + "'";
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return resultSet.getString("rep_email");
             return null;
@@ -175,7 +175,7 @@ public class DBO {
 
     //method to get the image of a participant
     public byte[] getImage(String username) {
-        query = "SELECT image FROM mcms.participant WHERE username = '" + username + "'";
+        query = "SELECT image FROM participant WHERE username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return resultSet.getBytes("image");
@@ -188,7 +188,7 @@ public class DBO {
 
     //method to get the image of a rejected participant
     public byte[] getRejectedImage(String username) {
-        query = "SELECT image FROM mcms.rejected_participant WHERE username = '" + username + "'";
+        query = "SELECT image FROM laravelll.rejected_participant WHERE username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return resultSet.getBytes("image");
@@ -201,7 +201,7 @@ public class DBO {
 
     //method to get the image of a school representative
     public byte[] getRepImage(String username) {
-        query = "SELECT image FROM mcms.school_representative WHERE rep_username = '" + username + "'";
+        query = "SELECT image FROM laravelll.school_representative WHERE rep_username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return resultSet.getBytes("image");
@@ -213,7 +213,7 @@ public class DBO {
     }
     // method to get the rep username using school reg number
     public String getRepUsername(String school) {
-        query = "SELECT rep_username FROM mcms.school_representative WHERE school_regNo = '" + school + "'";
+        query = "SELECT rep_username FROM laravelll.school_representative WHERE school_regNo = '" + school + "'";
         try {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) return resultSet.getString("rep_username");
@@ -227,7 +227,7 @@ public class DBO {
     //a method to get all challenge names   from the database where the start date is less than the current date and the end date is greater than the current date
     public String[] getChallenges()  {
 
-        query = "SELECT * FROM mcms.challenge WHERE challenge.challenge_start_date < CURDATE() AND challenge.challenge_end_date > CURDATE();";
+        query = "SELECT * FROM laravelll.challenge WHERE challenge.challenge_start_date < CURDATE() AND challenge.challenge_end_date > CURDATE();";
         try {
             resultSet = statement.executeQuery(query);
             //return null if resultset is empty
@@ -248,7 +248,7 @@ public class DBO {
     }
     //get participant details
     public String[] getParticipantDetails(String username) {
-        query = "SELECT * FROM mcms.participant WHERE username = '" + username + "'";
+        query = "SELECT * FROM laravelll.participant WHERE username = '" + username + "'";
         try {
             resultSet = statement.executeQuery(query);
             resultSet.next();
@@ -260,7 +260,7 @@ public class DBO {
     }
     //check challenge exists
     public boolean checkChallengeExists(String challengeName) {
-        query = "SELECT * FROM mcms.challenge WHERE challenge_name = '" + challengeName + "'";
+        query = "SELECT * FROM laravelll.challenge WHERE challenge_name = '" + challengeName + "'";
         try {
             resultSet = statement.executeQuery(query);
             return resultSet.next();
@@ -271,7 +271,7 @@ public class DBO {
     }
 //get challenge details 
     public String[] getChallengeDetails(String challengeName) {
-        query = "SELECT * FROM mcms.challenge WHERE challenge_name = '" + challengeName + "'";
+        query = "SELECT * FROM laravelll.challenge WHERE challenge_name = '" + challengeName + "'";
         try {
             resultSet = statement.executeQuery(query);
             resultSet.next();
@@ -284,7 +284,7 @@ public class DBO {
 //get random questions and their answers from question table where challenge id is equal to the challenge id
     public String[][] getQuestions(String id, int questions) {
 
-        query = "SELECT * FROM mcms.question WHERE challenge_id = '" + id + "' ORDER BY RAND() LIMIT " + questions;
+        query = "SELECT * FROM laravelll.question WHERE challenge_id = '" + id + "' ORDER BY RAND() LIMIT " + questions;
         try {
             resultSet = statement.executeQuery(query);
             resultSet.last();
@@ -308,7 +308,7 @@ public class DBO {
     }
 //insert into participant challenge table
     public void insertIntoParticipantChallenge(int score, String cId, int pId, String startDateTime, String endDateTime) {
-        query = "INSERT INTO mcms.participant_challenge (score, challenge_id, participant_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+        query = "INSERT INTO laravelll.participant_challenge (score, challenge_id, participant_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, score);
             pstmt.setInt(2, Integer.parseInt(cId));
@@ -324,7 +324,7 @@ public class DBO {
 
     //get the participant challenge id
     public int getParticipantChallengeId(int pId, String cId, String startDateTime) {
-        query = "SELECT participant_challenge_id FROM mcms.participant_challenge WHERE participant_id = " + pId + " AND challenge_id = " + cId + " AND start_time = '" + startDateTime + "'";
+        query = "SELECT participant_challenge_id FROM laravelll.participant_challenge WHERE participant_id = " + pId + " AND challenge_id = " + cId + " AND start_time = '" + startDateTime + "'";
         try {
             resultSet = statement.executeQuery(query);
             resultSet.next();
@@ -337,7 +337,7 @@ public class DBO {
 //insert into participant answers table
 
     public void insertIntoParticipantAnswers(int challengeId, String qId, String answer, String marks) {
-        query = "INSERT INTO mcms.participant_answer (participant_answer.participant_challenge_id, question_id, answer,marks) VALUES (?, ?, ?, ?)";
+        query = "INSERT INTO laravelll.participant_answer (participant_answer.participant_challenge_id, question_id, answer,marks) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, challengeId);
             pstmt.setInt(2, Integer.parseInt(qId));
