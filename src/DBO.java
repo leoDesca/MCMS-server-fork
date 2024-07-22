@@ -71,7 +71,7 @@ public class DBO {
         try {
             resultSet = statement.executeQuery(query);
             resultSet.next();
-            return new String[]{resultSet.getString("rep_username"), resultSet.getString("rep_fname"), resultSet.getString("rep_lname"), resultSet.getString("rep_email"), resultSet.getString("school_regNo")};
+            return new String[]{resultSet.getString("rep_username"), resultSet.getString("rep_name"),  resultSet.getString("rep_email"), resultSet.getString("school_regNo")};
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;

@@ -10,9 +10,9 @@ public class Representative {
     BufferedReader bufferedFileReader=null;
 
     public Representative(String[] repDetails) {
-        this.name = repDetails[1]+" "+repDetails[2];
-        this.email = repDetails[3];
-        this.schoolRegNo = repDetails[4];
+        this.name = repDetails[1];
+        this.email = repDetails[2];
+        this.schoolRegNo = repDetails[3];
         this.username = repDetails[0];
 
     }
