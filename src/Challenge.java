@@ -17,6 +17,14 @@ public class Challenge {
     private final String id;
     private  String name;
 
+    //id getter
+    public String getId() {
+        return id;
+    }
+
+
+    //constructor
+
     public Challenge(String name   , String description, int duration, int questions, int wrongMark, int blankMark, String startDate, String endDate,String id) {
         this.name = name;
         this.description = description;
@@ -71,6 +79,8 @@ public class Challenge {
             if(remainingTime<=0){
                 timeUsed=duration;
                 Main.server.printWriter.println("Time is up!!");
+                //print done
+//                Main.server.printWriter.println("done");
                 break;
             }
             Main.server.printWriter.println("Time left: "+remainingTime/60000+" minutes and "+(remainingTime%60000)/1000+" seconds Questions left: "+(questions.size()-(i+1)));
@@ -113,6 +123,14 @@ public class Challenge {
         }
         //if score is negative, set it to 0
         if (score<0) score=0;
+        //write a pdf file with the questions and answers attempted by the participant
+        //include the score and the time taken to complete the challenge
+        PDF pdf = new PDF();
+//        pdf.createPDF(questions,solutions,answers,marks,marksAwarded,score,timeUsed,fullName,pEmail,name);
+
+
+
+
 
         //send the score to the client
         Main.server.printWriter.println("Your score is: "+score+" out of "+questions.size()+" questions and you finished in "+timeUsed+" minutes");
@@ -120,6 +138,7 @@ public class Challenge {
         String subject = "Challenge Results";
         String body = "Dear "+fullName+",\n\nYou have completed the challenge "+name+" and your score is "+score+".You finished the challenge in "+timeUsed+" minutes.\nYou answered "+answered+" questions.\n\n Thank you for attempting Regards,\nG4MCMS";
         try {
+            //send email with pdf attachment
             emails.sendEmail(pEmail,subject,body);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
