@@ -348,4 +348,19 @@ public class DBO {
             System.out.println(e.getMessage());
         }
     }
+
+    //method to check number of challenge attempts using challenge id and participant id
+    public int checkChallengeAttempts(int pId, String cId) {
+        query = "SELECT COUNT(*) FROM participant_challenge WHERE participant_id = " + pId + " AND challenge_id = " + cId;
+        try {
+            resultSet = statement.executeQuery(query);
+            resultSet.next();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
 }
+
+

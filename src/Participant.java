@@ -42,14 +42,22 @@ public class Participant {
                     String[] challengeDetails = dbo.getChallengeDetails(command);
 
                     String[] details = {"Challenge name: " + challengeDetails[0], "Challenge description: " + challengeDetails[1], "Challenge duration(minutes): " + challengeDetails[2], "Questions to answer: " + challengeDetails[3], "Marks for wrong answer: " + challengeDetails[4], "Marks for correct answer: 1", "Marks for unanswered question: " + challengeDetails[5], "Start date: " + challengeDetails[6], "End date: " + challengeDetails[7]};
+                    //create a challenge object
                     Challenge challenge = new Challenge(challengeDetails[0], challengeDetails[1], Integer.parseInt(challengeDetails[2]), Integer.parseInt(challengeDetails[3]), Integer.parseInt(challengeDetails[4]), Integer.parseInt(challengeDetails[5]), challengeDetails[6], challengeDetails[7], challengeDetails[8]);
+
+
                     for (String detail : details) {
                         Main.server.printWriter.println(detail);
                     }
-                    //send done to the client
+                    //send done to the client if the challenge attempts are less than 3
+                    if(dbo.checkChallengeAttempts(participantId,challenge.getId())>=3){
+                        Main.server.printWriter.println("3");
+                        start();
+                    }
                     Main.server.printWriter.println("done");
                     //receive the response from the client
                     String response = Main.server.reader.readLine().strip();
+
                     System.out.println(response);
                     //if the response is start, send the questions to the client
                     switch (response) {
