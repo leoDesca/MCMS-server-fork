@@ -1,4 +1,8 @@
 import javax.imageio.ImageIO;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
@@ -148,4 +152,26 @@ public class Server {
         }
     }
     
+}private static String createPdf(String username, int score, String questionsAttempted, String answersGiven, String timeTaken) throws IOException {
+        String pdfFilePath = "C:\\Users\\J\\OneDrive\\Desktop\\PDF" + username + "_challenge_details.pdf";
+
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
+            document.open();
+            document.add(new Paragraph("Challenge Attempt Details"));
+            document.add(new Paragraph("Username: " + username));
+            document.add(new Paragraph("Score: " + score));
+            document.add(new Paragraph("Time Taken: " + timeTaken));
+            document.add(new Paragraph("Questions Attempted:\n" + questionsAttempted));
+            document.add(new Paragraph("Answers Given:\n" + answersGiven));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } finally {
+            document.close();
+        }
+
+        return pdfFilePath;
+    }
+
 }
