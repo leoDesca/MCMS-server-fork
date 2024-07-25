@@ -48,7 +48,6 @@ public class Challenge {
 
     //a method to display questions one at a time while showing time left for each attempt and storing each answer
     public void showQuestions(String[][] questionAnswers, String pEmail, int pId, String fullName){
-        Date date = new Date();
 
         ArrayList<String> answers = new ArrayList<>();
         ArrayList<String> questions = new ArrayList<>();
@@ -108,8 +107,12 @@ public class Challenge {
         int score=0;
         int answered = 0;
         for (int i=0;i<solutions.size();i++){
+            System.out.println(solutions.get(i)+" "+answers.get(i));
+            System.out.println(solutions.get(i).equalsIgnoreCase(answers.get(i)));
+
             if (solutions.get(i).equalsIgnoreCase(answers.get(i))){
-                score+=Integer.parseInt(marks.get(i));
+
+                score++;
                 answered++;
                 marksAwarded.add(marks.get(i));
             }else if (solutions.get(i).equalsIgnoreCase("")){
@@ -125,7 +128,7 @@ public class Challenge {
         if (score<0) score=0;
         //write a pdf file with the questions and answers attempted by the participant
         //include the score and the time taken to complete the challenge
-        PDF pdf = new PDF();
+//        PDF pdf = new PDF();
 //        pdf.createPDF(questions,solutions,answers,marks,marksAwarded,score,timeUsed,fullName,pEmail,name);
 
 
@@ -133,7 +136,7 @@ public class Challenge {
 
 
         //send the score to the client
-        Main.server.printWriter.println("Your score is: "+score+" out of "+questions.size()+" questions and you finished in "+timeUsed+" minutes");
+        Main.server.printWriter.println("Your score is: "+score+" out of "+questions.size()+" questions and you finished in "+timeUsed+" minutes" + "You answered "+answered+"  questions");
         Emails emails = new Emails();
         String subject = "Challenge Results";
         String body = "Dear "+fullName+",\n\nYou have completed the challenge "+name+" and your score is "+score+".You finished the challenge in "+timeUsed+" minutes.\nYou answered "+answered+" questions.\n\n Thank you for attempting Regards,\nG4MCMS";
