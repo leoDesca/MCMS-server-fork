@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.security.*;
+import java.util.List;
 
 public class Server {
     private ServerSocket serverSocket=null;
@@ -126,4 +127,25 @@ public class Server {
             return null;
         }
     }
+     public void sendReminderEmails() {
+    // Code to retrieve participants who missed the challenge deadline and send them emails
+    DBO dbo = new DBO();
+    dbo.connect();
+    
+    // Retrieve list of participants who missed deadlines
+    List<String> participants = dbo.getParticipantsWithMissedDeadlines();
+    
+    Emails emails = new Emails();
+    for (String participant : participants) {
+        // Customize these parameters as needed
+        String recipient = dbo.getEmailForParticipant(participant);
+        String subject = "Challenge Deadline Missed";
+        String body = "Dear " + participant + ",\n\nYou missed the deadline for the challenge.\n\nRegards,\nG4MCMS";
+        try {
+            emails.sendEmail(recipient, subject, body);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }
