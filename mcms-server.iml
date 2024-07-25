@@ -11,5 +11,7 @@
     <orderEntry type="library" name="mysql-connector-j-8.4" level="project" />
     <orderEntry type="library" name="javax.mail" level="project" />
     <orderEntry type="library" name="javax.activation" level="project" />
+    <orderEntry type="library" name="quartz-2.5.0-rc1" level="project" />
+    <orderEntry type="library" name="itextpdf-5.5.7" level="project" />
   </component>
 </module>

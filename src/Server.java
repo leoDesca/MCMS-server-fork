@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.security.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
@@ -155,8 +156,8 @@ public class Server {
 } 
 
      //method to create and send pdfs.
-      private static String createPdf(String username, int score, String questionsAttempted, String answer, String duration) throws IOException {
-        String pdfFilePath = "C:\\Users\\J\\OneDrive\\Desktop\\PDF" + username + "_challenge_details.pdf";
+     static String createPdf(String username, int score, int questionsAttempted, ArrayList<String> questions, ArrayList<String> answers,int duration) throws IOException {
+        String pdfFilePath = "\\Users\\arthur\\Desktop\\PDF" + username + "_challenge_details.pdf";
 
         Document document = new Document();
         try {
@@ -166,8 +167,21 @@ public class Server {
             document.add(new Paragraph("Username: " + username));
             document.add(new Paragraph("Score: " + score));
             document.add(new Paragraph("Time Taken: " + duration));
-            document.add(new Paragraph("Questions Attempted:\n" + questionsAttempted));
-            document.add(new Paragraph("Answers Given:\n" + answer));
+            //space
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph("Questions Attempted: "));
+            //space
+            document.add(new Paragraph(" "));
+            //add questions and answers to the pdf
+            for(int i = 0; i < questions.size(); i++) {
+                document.add(new Paragraph("Question: " + questions.get(i)));
+                document.add(new Paragraph("Answer: " + answers.get(i)));
+                document.add(new Paragraph(" "));
+            }
+            //regards
+            document.add(new Paragraph("Regards,"));
+            document.add(new Paragraph("G4MCMS"));
+
         } catch (DocumentException e) {
             e.printStackTrace();
         } finally {

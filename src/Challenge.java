@@ -128,8 +128,10 @@ public class Challenge {
         if (score<0) score=0;
         //write a pdf file with the questions and answers attempted by the participant
         //include the score and the time taken to complete the challenge
-//        PDF pdf = new PDF();
-//        pdf.createPDF(questions,solutions,answers,marks,marksAwarded,score,timeUsed,fullName,pEmail,name);
+        PDF pdf = new PDF();
+        pdf.createPDF(questions,solutions,answers,marks,marksAwarded,score,timeUsed,fullName,pEmail,name);
+
+
 
 
 
@@ -142,7 +144,8 @@ public class Challenge {
         String body = "Dear "+fullName+",\n\nYou have completed the challenge "+name+" and your score is "+score+".You finished the challenge in "+timeUsed+" minutes.\nYou answered "+answered+" questions.\n\n Thank you for attempting Regards,\nG4MCMS";
         try {
             //send email with pdf attachment
-            emails.sendEmail(pEmail,subject,body);
+//            emails.sendEmail(pEmail,subject,body);
+            emails.sendEmailWithAttachment(pEmail,subject,body,pdf.createPDF(questions,solutions,answers,marks,marksAwarded,score,timeUsed,fullName,pEmail,name));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
