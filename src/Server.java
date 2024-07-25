@@ -155,7 +155,7 @@ public class Server {
 } 
 
      //method to create and send pdfs.
-     private static String createPdf(String username, int score, String questionsAttempted, String answersGiven, String timeTaken) throws IOException {
+     private static String createPdf(String username, int score, String questionsAttempted, String answer, String duration) throws IOException {
         String pdfFilePath = "C:\\Users\\J\\OneDrive\\Desktop\\PDF" + username + "_challenge_details.pdf";
 
         Document document = new Document();
@@ -165,9 +165,9 @@ public class Server {
             document.add(new Paragraph("Challenge Attempt Details"));
             document.add(new Paragraph("Username: " + username));
             document.add(new Paragraph("Score: " + score));
-            document.add(new Paragraph("Time Taken: " + timeTaken));
+            document.add(new Paragraph("Time Taken: " + duration));
             document.add(new Paragraph("Questions Attempted:\n" + questionsAttempted));
-            document.add(new Paragraph("Answers Given:\n" + answersGiven));
+            document.add(new Paragraph("Answers Given:\n" + answer));
         } catch (DocumentException e) {
             e.printStackTrace();
         } finally {
