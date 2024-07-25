@@ -155,7 +155,7 @@ public class Server {
 } 
 
      //method to create and send pdfs.
-     private static String createPdf(String username, int score, String questionsAttempted, String answer, String duration) throws IOException {
+      private static String createPdf(String username, int score, String questionsAttempted, String answer, String duration) throws IOException {
         String pdfFilePath = "C:\\Users\\J\\OneDrive\\Desktop\\PDF" + username + "_challenge_details.pdf";
 
         Document document = new Document();
