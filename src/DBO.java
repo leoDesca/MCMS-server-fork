@@ -129,15 +129,8 @@ public class DBO {
 
     //method to check whether username is in either participant tables or school_representative table
     public boolean checkUsername(String username) {
-        query = "SELECT * FROM participant WHERE username = '" + username + "'";
         try {
-            resultSet = statement.executeQuery(query);
-            if (resultSet.next()) return true;
             query = "SELECT * FROM school_representative WHERE rep_username = '" + username + "'";
-            resultSet = statement.executeQuery(query);
-
-            if (resultSet.next()) return true;
-            query = "SELECT * FROM rejected_participant WHERE username = '" + username + "'";
             resultSet = statement.executeQuery(query);
             return resultSet.next();
         } catch (SQLException e) {
