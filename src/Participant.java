@@ -23,72 +23,78 @@ public class Participant {
         String command;
         System.out.println("Start for participant........");
         try {
-        command=Main.server.reader.readLine().strip();
-            System.out.println(command);
+            while (true){
 
-
-            if (command.equalsIgnoreCase("view challenges")) {
-                System.out.println("Viewing challenges");
-                Challenge.viewChallenges();
-                start();
-            }
-            else if (command.equalsIgnoreCase("attempt challenge")){
-                System.out.println("Attempting challenge");
-                Challenge.viewChallenges();
                 command=Main.server.reader.readLine().strip();
-                DBO dbo = new DBO();
-                dbo.connect();
-                if(dbo.checkChallengeExists(command)) {
-                    String[] challengeDetails = dbo.getChallengeDetails(command);
-
-                    String[] details = {"Challenge name: " + challengeDetails[0], "Challenge description: " + challengeDetails[1], "Challenge duration(minutes): " + challengeDetails[2], "Questions to answer: " + challengeDetails[3], "Marks for wrong answer: " + challengeDetails[4], "Marks for correct answer: 1", "Marks for unanswered question: " + challengeDetails[5], "Start date: " + challengeDetails[6], "End date: " + challengeDetails[7]};
-                    //create a challenge object
-                    Challenge challenge = new Challenge(challengeDetails[0], challengeDetails[1], Integer.parseInt(challengeDetails[2]), Integer.parseInt(challengeDetails[3]), Integer.parseInt(challengeDetails[4]), Integer.parseInt(challengeDetails[5]), challengeDetails[6], challengeDetails[7], challengeDetails[8]);
+                System.out.println(command);
 
 
-                    for (String detail : details) {
-                        Main.server.printWriter.println(detail);
-                    }
-                    //send done to the client if the challenge attempts are less than 3
-                    if(dbo.checkChallengeAttempts(participantId,challenge.getId())>=3){
-                        Main.server.printWriter.println("3");
-                        start();
-                    }
-                    Main.server.printWriter.println("done");
-                    //receive the response from the client
-                    String response = Main.server.reader.readLine().strip();
-
-                    System.out.println(response);
-                    //if the response is start, send the questions to the client
-                    switch (response) {
-                        case "start":
-                            System.out.println("Starting.....");
-                            challenge.showQuestions(challenge.getQuestions(), email, participantId, fullName);
-                            start();
-                            //if the response is back listen for new participant choice
-                            break;
-                        case "back":
-                            System.out.println("going back");
-                            start();
-                            break;
-
-                        default:
-                            Main.server.printWriter.println("invalid command");
-                            start();
-                    }
-                }
-                else {
-                    Main.server.printWriter.println("invalid challenge");
+                if (command.equalsIgnoreCase("view challenges")) {
+                    System.out.println("Viewing challenges");
+                    Challenge.viewChallenges();
                     start();
                 }
-            } else if ( command.equalsIgnoreCase("exit")){
-                System.out.println("in exit");
-                Main.start();
-            } else {
-                Main.server.printWriter.println("invalid command");
-                start();
+                else if (command.equalsIgnoreCase("attempt challenge")){
+                    System.out.println("Attempting challenge");
+                    Challenge.viewChallenges();
+                    command=Main.server.reader.readLine().strip();
+                    DBO dbo = new DBO();
+                    dbo.connect();
+                    if(dbo.checkChallengeExists(command)) {
+                        String[] challengeDetails = dbo.getChallengeDetails(command);
 
+                        String[] details = {"Challenge name: " + challengeDetails[0], "Challenge description: " + challengeDetails[1], "Challenge duration(minutes): " + challengeDetails[2], "Questions to answer: " + challengeDetails[3], "Marks for wrong answer: " + challengeDetails[4], "Marks for correct answer: 1", "Marks for unanswered question: " + challengeDetails[5], "Start date: " + challengeDetails[6], "End date: " + challengeDetails[7]};
+                        //create a challenge object
+                        Challenge challenge = new Challenge(challengeDetails[0], challengeDetails[1], Integer.parseInt(challengeDetails[2]), Integer.parseInt(challengeDetails[3]), Integer.parseInt(challengeDetails[4]), Integer.parseInt(challengeDetails[5]), challengeDetails[6], challengeDetails[7], challengeDetails[8]);
+
+
+                        for (String detail : details) {
+                            Main.server.printWriter.println(detail);
+                        }
+                        //send done to the client if the challenge attempts are less than 3
+                        if(dbo.checkChallengeAttempts(participantId,challenge.getId())>=3){
+                            Main.server.printWriter.println("3");
+                            start();
+                        }
+                        Main.server.printWriter.println("done");
+                        //receive the response from the client
+                        String response = Main.server.reader.readLine().strip();
+
+                        System.out.println(response);
+                        //if the response is start, send the questions to the client
+                        switch (response) {
+                            case "start":
+                                System.out.println("Starting.....");
+                                challenge.showQuestions(challenge.getQuestions(), email, participantId, fullName);
+
+                                //if the response is back listen for new participant choice
+                                break;
+                            case "back":
+                                System.out.println("going back");
+                                start();
+                                break;
+
+                            default:
+                                Main.server.printWriter.println("invalid command");
+
+                        }
+                    }
+                    else {
+                        Main.server.printWriter.println("invalid challenge");
+
+                    }
+                } else if ( command.equalsIgnoreCase("exit")){
+                    System.out.println("in exit");
+                    Main.start();
+                    break;
+                } else {
+                    Main.server.printWriter.println("invalid command");
+                    start();
+
+                }
+                
             }
+
 
         } catch (IOException e) {
             throw new RuntimeException(e);

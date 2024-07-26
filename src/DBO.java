@@ -1,6 +1,8 @@
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class DBO {
@@ -354,6 +356,42 @@ public class DBO {
             return 0;
         }
     }
+     // Retrieve participants who missed deadlines
+    public List<String> getParticipantsWithMissedDeadlines() {
+        List<String> participants = new ArrayList<>();
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "SELECT username FROM participants WHERE deadline < NOW() AND status = 'pending'";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                participants.add(rs.getString("username"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return participants;
+    }
+
+    // Retrieve the email for a given participant
+    public String getEmailForParticipant(String participant) {
+        String email = null;
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "SELECT email FROM participants WHERE username = '" + participant + "'";
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                email = rs.getString("email");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return email;
+    }
+
 }
+
+
+
+
 
 

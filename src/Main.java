@@ -25,7 +25,7 @@ public class Main {
     public static void start() {
         try {
             while (true) {
-//                System.out.println("listening");
+                System.out.println("listening......");
                 request = server.reader.readLine().strip().split(" ");
 
 
@@ -35,7 +35,7 @@ public class Main {
                     dbo.connect();
 
 //check if the request is valid
-                    System.out.println("valid");
+                    System.out.println("valid command");
                     switch (request[0]) {
                         case "register":
                             if (request.length == 9) {

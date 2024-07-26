@@ -1,8 +1,14 @@
 import javax.imageio.ImageIO;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.security.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
     private ServerSocket serverSocket=null;
@@ -126,4 +132,63 @@ public class Server {
             return null;
         }
     }
+     public void sendReminderEmails() {
+    // Code to retrieve participants who missed the challenge deadline and send them emails
+    DBO dbo = new DBO();
+    dbo.connect();
+    
+    // Retrieve list of participants who missed deadlines
+    List<String> participants = dbo.getParticipantsWithMissedDeadlines();
+    
+    Emails emails = new Emails();
+    for (String participant : participants) {
+        // Customize these parameters as needed
+        String recipient = dbo.getEmailForParticipant(participant);
+        String subject = "Challenge Deadline Missed";
+        String body = "Dear " + participant + ",\n\nYou missed the deadline for the challenge.\n\nRegards,\nG4MCMS";
+        try {
+            emails.sendEmail(recipient, subject, body);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
+} 
+
+     //method to create and send pdfs.
+     static String createPdf(String username, int score, int questionsAttempted, ArrayList<String> questions, ArrayList<String> answers,int duration) throws IOException {
+        String pdfFilePath = "\\Users\\arthur\\Desktop\\PDF" + username + "_challenge_details.pdf";
+
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath));
+            document.open();
+            document.add(new Paragraph("Challenge Attempt Details"));
+            document.add(new Paragraph("Username: " + username));
+            document.add(new Paragraph("Score: " + score));
+            document.add(new Paragraph("Time Taken: " + duration));
+            //space
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph("Questions Attempted: "));
+            //space
+            document.add(new Paragraph(" "));
+            //add questions and answers to the pdf
+            for(int i = 0; i < questions.size(); i++) {
+                document.add(new Paragraph("Question: " + questions.get(i)));
+                document.add(new Paragraph("Answer: " + answers.get(i)));
+                document.add(new Paragraph(" "));
+            }
+            //regards
+            document.add(new Paragraph("Regards,"));
+            document.add(new Paragraph("G4MCMS"));
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } finally {
+            document.close();
+        }
+
+        return pdfFilePath;
+    }
+
 }
